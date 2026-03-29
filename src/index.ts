@@ -3,6 +3,9 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import { initSchema } from './models/db.js';
 import { formatError, AppError } from './utils/errors.js';
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 // Import routes
 import { agentRoutes } from './routes/agent.js';
@@ -38,6 +41,25 @@ async function buildServer() {
     timestamp: new Date().toISOString(),
     version: '0.1.0',
   }));
+
+  // Serve SKILL.md documentation
+  fastify.get('/SKILL.md', async (request, reply) => {
+    try {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = dirname(__filename);
+      const skillPath = join(__dirname, '..', 'docs', 'API_SKILL.md');
+      const content = readFileSync(skillPath, 'utf-8');
+      reply.type('text/markdown').send(content);
+    } catch (error) {
+      reply.code(404).send({
+        success: false,
+        error: {
+          code: 'NOT_FOUND',
+          message: 'SKILL.md not found',
+        },
+      });
+    }
+  });
 
   // Register routes
   await fastify.register(agentRoutes, { prefix: '' });
