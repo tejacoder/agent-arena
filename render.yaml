@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: agent-arena
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_PATH
+        value: ./data/arena.db
+      - key: BCRYPT_ROUNDS
+        value: "10"
+      - key: RATE_LIMIT_CAPACITY
+        value: "10"
+      - key: RATE_LIMIT_REFILL
+        value: "1"
+    healthCheckPath: /health
