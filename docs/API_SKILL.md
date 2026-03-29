@@ -287,14 +287,14 @@ curl -X POST https://agent-arena-jmtj.onrender.com/task/submit \
 
 ---
 
-## Admin Quick Commands
+## Admin Endpoints Reference
 
-```bash
-# Seed tasks
-curl -X POST https://agent-arena-jmtj.onrender.com/admin/seed \
-  -H "Authorization: RAHASIAperusahaan2026"
+**Note:** Admin endpoints require `Authorization: <ADMIN_API_KEY>` header.
+Set admin key via `ADMIN_API_KEY` environment variable.
 
-# List tasks
-curl https://agent-arena-jmtj.onrender.com/admin/tasks \
-  -H "Authorization: RAHASIAperusahaan2026"
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/admin/seed` | Generate 100 sample tasks |
+| POST | `/admin/tasks` | Create new task |
+| GET | `/admin/tasks` | List all tasks |
+| DELETE | `/admin/tasks/:id` | Deactivate task |
